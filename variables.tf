@@ -75,16 +75,6 @@ variable "log_group_name" {
   description = "name of the log group for the ECS cluster"
 }
 
-# variable "exec_iam_role_arn" {
-#   type        = string
-#   description = "ARN of the IAM role for the ECS task execution"
-# }
-
-# variable "task_exec_iam_policy_arn" {
-#   type        = string
-#   description = "ARN of the IAM policy for the ECS task execution"
-# }
-
 variable "task_iam_role_arn" {
   type        = string
   description = "ARN of the IAM role for the ECS task"
@@ -110,5 +100,29 @@ variable "git_username" {
   description = "the username for the git server"
   type        = string
   default     = ""
+}
+
+variable "autoscaling_max_capacity" {
+  description = "maximum number of instances in the autoscaling group"
+  type        = number
+  default     = 4
+}
+
+variable "memory" {
+  description = "memory for the ECS task"
+  type        = number
+  default     = 2048
+}
+
+variable "cpu" {
+  description = "cpu for the ECS task"
+  type        = number
+  default     = 512
+}
+
+variable "enable_autoscaling" {
+  description = "enable autoscaling for the ECS service"
+  type        = bool
+  default     = true
 }
 

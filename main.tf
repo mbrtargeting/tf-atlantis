@@ -117,10 +117,10 @@ module "atlantis" {
 
   # ECS Service
   service = {
-    cpu                      = 512
-    memory                   = 2048
-    enable_autoscaling       = true
-    autoscaling_max_capacity = 4
+    cpu                      = var.cpu
+    memory                   = var.memory
+    enable_autoscaling       = var.enable_autoscaling
+    autoscaling_max_capacity = var.autoscaling_max_capacity
     task_exec_secret_arns = [
       try(aws_secretsmanager_secret.atlantis_gitlab_token[0].arn, aws_secretsmanager_secret.atlantis_gh_token[0].arn),
       try(aws_secretsmanager_secret.atlantis_gitlab_secret[0].arn, aws_secretsmanager_secret.atlantis_gh_secret[0].arn),

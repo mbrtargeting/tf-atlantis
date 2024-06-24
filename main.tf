@@ -1,7 +1,5 @@
 locals {
-  tf_http_password = var.git_server_type == "gitlab" ? aws_secretsmanager_secret_version.atlantis_gitlab_token[0].secret_string : aws_secretsmanager_secret_version.atlantis_gh_token[0].secret_string
-
-  common_environment_variables = [
+  environment_variables = [
     {
       name  = "ATLANTIS_REPO_ALLOWLIST"
       value = aws_ssm_parameter.atlantis_repo_list.value
@@ -39,50 +37,44 @@ locals {
       value = var.atlantis_web_username
     },
     {
-      name  = "TF_HTTP_PASSWORD"
-      value = local.tf_http_password
+      name = "TF_HTTP_PASSWORD"
+      value = try(aws_secretsmanager_secret_version.atlantis_gh_token[0].secret_string,
+      aws_secretsmanager_secret_version.atlantis_gitlab_token[0].secret_string)
     },
     {
       name  = "TF_HTTP_RETRY_WAIT_MIN"
       value = "5"
     },
-  ]
-
-  gitlab_specific_environment_variables = var.git_server_type == "gitlab" ? [
     {
       name  = "ATLANTIS_GITLAB_HOSTNAME"
       value = var.gitlab_hostname
     },
     {
       name  = "ATLANTIS_GITLAB_USER"
-      value = aws_ssm_parameter.atlantis_gitlab_username[0].value
+      value = try(aws_ssm_parameter.atlantis_gitlab_username[0].value, null)
     },
-    ] : [
     {
       name  = "ATLANTIS_GH_USER"
-      value = aws_ssm_parameter.atlantis_gh_username[0].value
+      value = try(aws_ssm_parameter.atlantis_gh_username[0].value, null)
     },
   ]
 
-  all_environment_variables = concat(local.common_environment_variables, local.gitlab_specific_environment_variables)
-
-  secrets = var.git_server_type == "gitlab" ? [
+  secrets = [
     {
       name      = "ATLANTIS_GITLAB_TOKEN"
-      valueFrom = try(aws_secretsmanager_secret.atlantis_gitlab_token[0].id, null)
+      valueFrom = try(aws_secretsmanager_secret.atlantis_gitlab_token[0].id, "default")
     },
     {
       name      = "ATLANTIS_GITLAB_WEBHOOK_SECRET"
-      valueFrom = try(aws_secretsmanager_secret.atlantis_gitlab_secret[0].id, null)
+      valueFrom = try(aws_secretsmanager_secret.atlantis_gitlab_secret[0].id, "default")
     },
-    ] : [
     {
       name      = "ATLANTIS_GH_TOKEN"
-      valueFrom = try(aws_secretsmanager_secret.atlantis_gh_token[0].id, null)
+      valueFrom = try(aws_secretsmanager_secret.atlantis_gh_token[0].id, "default")
     },
     {
       name      = "ATLANTIS_GH_WEBHOOK_SECRET"
-      valueFrom = try(aws_secretsmanager_secret.atlantis_gh_secret[0].id, null)
+      valueFrom = try(aws_secretsmanager_secret.atlantis_gh_secret[0].id, "default")
     },
   ]
 }
@@ -96,7 +88,7 @@ module "atlantis" {
   atlantis = {
     cpu         = 512
     memory      = 2048
-    environment = local.all_environment_variables
+    environment = local.environment_variables
     secrets     = local.secrets
   }
 
@@ -144,11 +136,11 @@ module "atlantis" {
     }
     assign_public_ip = false
   }
-  service_subnets = var.private_subnet_ids
+  service_subnets = data.aws_subnets.private.ids
   vpc_id          = var.atlantis_vpc_id
 
   # ALB
-  alb_subnets             = var.public_subnet_ids
+  alb_subnets             = data.aws_subnets.public.ids
   certificate_domain_name = var.atlantis_dns_name
   route53_zone_id         = var.atlantis_zone_id
   alb = {
@@ -160,14 +152,14 @@ module "atlantis" {
   efs = {
     mount_targets = {
       "eu-west-1a" = {
-        subnet_id = var.private_subnet_ids[0]
+        subnet_id = data.aws_subnets.private.ids[0]
       }
       "eu-west-1b" = {
-        subnet_id = var.private_subnet_ids[1]
+        subnet_id = data.aws_subnets.private.ids[1]
       }
-      "eu-west-1c" = {
-        subnet_id = var.private_subnet_ids[2]
-      }
+#       "eu-west-1c" = {
+#         subnet_id = data.aws_subnets.private.ids[2]
+#       }
     }
   }
 

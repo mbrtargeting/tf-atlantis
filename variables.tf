@@ -39,16 +39,6 @@ variable "atlantis_dns_name" {
   description = "the DNS name for the atlantis web interface"
 }
 
-variable "public_subnet_ids" {
-  type        = list(string)
-  description = "list of public subnets to deploy into"
-}
-
-variable "private_subnet_ids" {
-  type        = list(string)
-  description = "list of private subnets to deploy into"
-}
-
 variable "repo_list" {
   type        = list(string)
   description = "list of repositories to be managed by atlantis"
@@ -85,19 +75,14 @@ variable "exec_iam_role_policies" {
   description = "map of IAM policies for the ECS task execution"
 }
 
-variable "git_server_type" {
+variable "github_username" {
+  description = "the username for the github account"
   type        = string
-  description = "the type of git server to use. Must be either 'gitlab' or 'github'."
-  default     = "gitlab"
-
-  validation {
-    condition     = can(regex("^(gitlab|github)$", var.git_server_type))
-    error_message = "Must be either 'gitlab' or 'github'."
-  }
+  default     = ""
 }
 
-variable "git_username" {
-  description = "the username for the git server"
+variable "gitlab_username" {
+  description = "the username for the gitlab account"
   type        = string
   default     = ""
 }
@@ -124,5 +109,11 @@ variable "enable_autoscaling" {
   description = "enable autoscaling for the ECS service"
   type        = bool
   default     = true
+}
+
+variable "region" {
+  description = "valid AWS region to deploy to"
+  type        = string
+  default     = "eu-central-1"
 }
 

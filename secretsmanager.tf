@@ -1,6 +1,6 @@
 # Gitlab secrets
 resource "random_password" "atlantis_gitlab_secret" {
-  count   = var.git_server_type == "gitlab" ? 1 : 0
+  count   = var.gitlab_username != "" ? 1 : 0
   length  = 24
   special = false
   numeric = true
@@ -9,7 +9,7 @@ resource "random_password" "atlantis_gitlab_secret" {
 }
 
 resource "aws_secretsmanager_secret" "atlantis_gitlab_secret" {
-  count                   = var.git_server_type == "gitlab" ? 1 : 0
+  count                   = var.gitlab_username != "" ? 1 : 0
   name                    = "atlantis-gitlab-secret"
   description             = "GitLab secret for atlantis"
   kms_key_id              = var.kms_key_id
@@ -17,13 +17,13 @@ resource "aws_secretsmanager_secret" "atlantis_gitlab_secret" {
 }
 
 resource "aws_secretsmanager_secret_version" "atlantis_gitlab_secret" {
-  count         = var.git_server_type == "gitlab" ? 1 : 0
+  count         = var.gitlab_username != "" ? 1 : 0
   secret_id     = aws_secretsmanager_secret.atlantis_gitlab_secret[0].id
   secret_string = random_password.atlantis_gitlab_secret[0].result
 }
 
 resource "aws_secretsmanager_secret" "atlantis_gitlab_token" {
-  count                   = var.git_server_type == "gitlab" ? 1 : 0
+  count                   = var.gitlab_username != "" ? 1 : 0
   name                    = "atlantis-gitlab-token"
   description             = "GitLab token for atlantis"
   kms_key_id              = var.kms_key_id
@@ -31,7 +31,7 @@ resource "aws_secretsmanager_secret" "atlantis_gitlab_token" {
 }
 
 resource "aws_secretsmanager_secret_version" "atlantis_gitlab_token" {
-  count         = var.git_server_type == "gitlab" ? 1 : 0
+  count         = var.gitlab_username != "" ? 1 : 0
   secret_id     = aws_secretsmanager_secret.atlantis_gitlab_token[0].id
   secret_string = "to_be_replaced"
 
@@ -42,13 +42,13 @@ resource "aws_secretsmanager_secret_version" "atlantis_gitlab_token" {
 }
 
 data "aws_secretsmanager_secret_version" "atlantis_gitlab_token" {
-  count     = var.git_server_type == "gitlab" ? 1 : 0
+  count     = var.gitlab_username != "" ? 1 : 0
   secret_id = aws_secretsmanager_secret.atlantis_gitlab_token[0].id
 }
 
 # Github secrets
 resource "random_password" "atlantis_gh_secret" {
-  count   = var.git_server_type == "github" ? 1 : 0
+  count   = var.github_username != "" ? 1 : 0
   length  = 24
   special = false
   numeric = true
@@ -57,7 +57,7 @@ resource "random_password" "atlantis_gh_secret" {
 }
 
 resource "aws_secretsmanager_secret" "atlantis_gh_secret" {
-  count                   = var.git_server_type == "github" ? 1 : 0
+  count                   = var.github_username != "" ? 1 : 0
   name                    = "atlantis-github-secret"
   description             = "Github secret for atlantis"
   kms_key_id              = var.kms_key_id
@@ -65,13 +65,13 @@ resource "aws_secretsmanager_secret" "atlantis_gh_secret" {
 }
 
 resource "aws_secretsmanager_secret_version" "atlantis_gh_secret" {
-  count         = var.git_server_type == "github" ? 1 : 0
+  count         = var.github_username != "" ? 1 : 0
   secret_id     = aws_secretsmanager_secret.atlantis_gh_secret[0].id
   secret_string = random_password.atlantis_gh_secret[0].result
 }
 
 resource "aws_secretsmanager_secret" "atlantis_gh_token" {
-  count                   = var.git_server_type == "github" ? 1 : 0
+  count                   = var.github_username != "" ? 1 : 0
   name                    = "atlantis-github-token"
   description             = "Giihub token for atlantis"
   kms_key_id              = var.kms_key_id
@@ -79,7 +79,7 @@ resource "aws_secretsmanager_secret" "atlantis_gh_token" {
 }
 
 resource "aws_secretsmanager_secret_version" "atlantis_gh_token" {
-  count         = var.git_server_type == "github" ? 1 : 0
+  count         = var.github_username != "" ? 1 : 0
   secret_id     = aws_secretsmanager_secret.atlantis_gh_token[0].id
   secret_string = "to_be_replaced"
 }

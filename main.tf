@@ -18,7 +18,7 @@ locals {
     },
     {
       name  = "ATLANTIS_WEB_PASSWORD"
-      value = var.atlantis_web_password
+      value = aws_secretsmanager_secret_version.atlantis_web_password.secret_string
     },
     {
       name  = "ATLANTIS_REPO_CONFIG_JSON"
@@ -157,9 +157,9 @@ module "atlantis" {
       "eu-west-1b" = {
         subnet_id = data.aws_subnets.private.ids[1]
       }
-#       "eu-west-1c" = {
-#         subnet_id = data.aws_subnets.private.ids[2]
-#       }
+      "eu-west-1c" = {
+        subnet_id = data.aws_subnets.private.ids[2]
+      }
     }
   }
 

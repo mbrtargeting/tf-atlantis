@@ -49,12 +49,6 @@ variable "atlantis_web_username" {
   description = "username for the atlantis web interface"
 }
 
-variable "atlantis_web_password" {
-  type        = string
-  description = "password for the atlantis web interface"
-}
-
-
 variable "kms_key_id" {
   type        = string
   description = "KMS key id for the log group"

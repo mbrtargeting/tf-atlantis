@@ -83,24 +83,3 @@ resource "aws_secretsmanager_secret_version" "atlantis_gh_token" {
   secret_id     = aws_secretsmanager_secret.atlantis_gh_token[0].id
   secret_string = "to_be_replaced"
 }
-
-# Atlantis WEB secret
-resource "random_password" "atlantis_web_password" {
-  length  = 24
-  special = false
-  numeric = true
-  upper   = true
-  lower   = true
-}
-
-resource "aws_secretsmanager_secret" "atlantis_web_password" {
-  name                    = "atlantis-web-password"
-  description             = "WEB password for atlantis"
-  kms_key_id              = var.kms_key_id
-  recovery_window_in_days = 0
-}
-
-resource "aws_secretsmanager_secret_version" "atlantis_web_password" {
-  secret_id     = aws_secretsmanager_secret.atlantis_web_password.id
-  secret_string = random_password.atlantis_web_password.result
-}

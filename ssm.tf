@@ -20,3 +20,19 @@ resource "aws_ssm_parameter" "atlantis_repo_list" {
   type        = "String"
   value       = join(", ", var.repo_list)
 }
+
+# Atlantis WEB secret
+resource "random_password" "atlantis_web_password" {
+  length  = 24
+  special = false
+  numeric = true
+  upper   = true
+  lower   = true
+}
+
+resource "aws_ssm_parameter" "atlantis_web_password" {
+  name        = "${local.path_prefix}atlantis/web/password"
+  description = "Atlantis web password"
+  type        = "SecureString"
+  value       = random_password.atlantis_web_password.result
+}

@@ -18,7 +18,7 @@ locals {
     },
     {
       name  = "ATLANTIS_WEB_PASSWORD"
-      value = aws_secretsmanager_secret_version.atlantis_web_password.secret_string
+      value = aws_ssm_parameter.atlantis_web_password.value
     },
     {
       name  = "ATLANTIS_REPO_CONFIG_JSON"

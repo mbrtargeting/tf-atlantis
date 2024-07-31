@@ -62,19 +62,19 @@ locals {
   secrets = [
     {
       name      = "ATLANTIS_GITLAB_TOKEN"
-      valueFrom = try(aws_secretsmanager_secret.atlantis_gitlab_token[0].id, "default")
+      valueFrom = try(aws_secretsmanager_secret.atlantis_gitlab_token[0].id, aws_secretsmanager_secret.atlantis_gh_token[0].id)
     },
     {
       name      = "ATLANTIS_GITLAB_WEBHOOK_SECRET"
-      valueFrom = try(aws_secretsmanager_secret.atlantis_gitlab_secret[0].id, "default")
+      valueFrom = try(aws_secretsmanager_secret.atlantis_gitlab_secret[0].id, aws_secretsmanager_secret.atlantis_gh_secret[0].id)
     },
     {
       name      = "ATLANTIS_GH_TOKEN"
-      valueFrom = try(aws_secretsmanager_secret.atlantis_gh_token[0].id, "default")
+      valueFrom = try(aws_secretsmanager_secret.atlantis_gh_token[0].id, aws_secretsmanager_secret.atlantis_gitlab_token[0].id)
     },
     {
       name      = "ATLANTIS_GH_WEBHOOK_SECRET"
-      valueFrom = try(aws_secretsmanager_secret.atlantis_gh_secret[0].id, "default")
+      valueFrom = try(aws_secretsmanager_secret.atlantis_gh_secret[0].id, aws_secretsmanager_secret.atlantis_gitlab_secret[0].id)
     },
   ]
 }
@@ -120,6 +120,13 @@ module "atlantis" {
     task_exec_ssm_param_arns = [
       try(aws_ssm_parameter.atlantis_gitlab_username[0].arn, aws_ssm_parameter.atlantis_gh_username[0].arn),
     ]
+
+    task_exec_iam_statements = {
+      kms_access = {
+        actions   = ["kms:GenerateDataKey", "kms:Encrypt", "kms:Decrypt"]
+        resources = [var.kms_key_id]
+      }
+    }
 
     # Provide Atlantis permission necessary to create/destroy resources
     task_exec_iam_role_name = "AtlantisElevatedCdRunnerExec"

@@ -86,8 +86,8 @@ module "atlantis" {
 
   # ECS Container Definition
   atlantis = {
-    cpu         = 512
-    memory      = 2048
+    cpu         = var.cpu
+    memory      = var.memory
     environment = local.environment_variables
     secrets     = local.secrets
   }
@@ -116,6 +116,8 @@ module "atlantis" {
     task_exec_secret_arns = [
       try(aws_secretsmanager_secret.atlantis_gitlab_token[0].arn, aws_secretsmanager_secret.atlantis_gh_token[0].arn),
       try(aws_secretsmanager_secret.atlantis_gitlab_secret[0].arn, aws_secretsmanager_secret.atlantis_gh_secret[0].arn),
+      try(aws_secretsmanager_secret.atlantis_gh_token[0].arn, aws_secretsmanager_secret.atlantis_gitlab_token[0].arn),
+      try(aws_secretsmanager_secret.atlantis_gh_secret[0].arn, aws_secretsmanager_secret.atlantis_gitlab_secret[0].arn),
     ]
     task_exec_ssm_param_arns = [
       try(aws_ssm_parameter.atlantis_gitlab_username[0].arn, aws_ssm_parameter.atlantis_gh_username[0].arn),

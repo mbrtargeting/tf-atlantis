@@ -1,51 +1,6 @@
 locals {
   environment_variables = [
     {
-      name  = "ATLANTIS_REPO_ALLOWLIST"
-      value = aws_ssm_parameter.atlantis_repo_list.value
-    },
-    {
-      name  = "ATLANTIS_WEB_BASIC_AUTH"
-      value = "true"
-    },
-    {
-      name  = "ATLANTIS_WEBSOCKET_CHECK_ORIGIN"
-      value = "true"
-    },
-    {
-      name  = "ATLANTIS_WEB_USERNAME"
-      value = var.atlantis_web_username
-    },
-    {
-      name  = "ATLANTIS_WEB_PASSWORD"
-      value = aws_ssm_parameter.atlantis_web_password.value
-    },
-    {
-      name  = "ATLANTIS_REPO_CONFIG_JSON"
-      value = jsonencode(yamldecode(file("${path.module}/server-atlantis.yaml"))),
-    },
-    {
-      name  = "TF_HTTP_LOCK_METHOD"
-      value = "POST"
-    },
-    {
-      name  = "TF_HTTP_UNLOCK_METHOD"
-      value = "DELETE"
-    },
-    {
-      name  = "TF_HTTP_USERNAME"
-      value = var.atlantis_web_username
-    },
-    {
-      name = "TF_HTTP_PASSWORD"
-      value = try(aws_secretsmanager_secret_version.atlantis_gh_token[0].secret_string,
-      aws_secretsmanager_secret_version.atlantis_gitlab_token[0].secret_string)
-    },
-    {
-      name  = "TF_HTTP_RETRY_WAIT_MIN"
-      value = "5"
-    },
-    {
       name  = "ATLANTIS_GITLAB_HOSTNAME"
       value = var.gitlab_hostname
     },
@@ -57,17 +12,54 @@ locals {
       name  = "ATLANTIS_GH_USER"
       value = try(aws_ssm_parameter.atlantis_gh_username[0].value, null)
     },
+    {
+      name  = "ATLANTIS_REPO_ALLOWLIST"
+      value = aws_ssm_parameter.atlantis_repo_list.value
+    },
+    {
+      name  = "ATLANTIS_REPO_CONFIG_JSON"
+      value = jsonencode(yamldecode(file("${path.module}/server-atlantis.yaml"))),
+    },
+    {
+      name  = "ATLANTIS_WEB_BASIC_AUTH"
+      value = "true"
+    },
+    {
+      name  = "ATLANTIS_WEB_PASSWORD"
+      value = aws_ssm_parameter.atlantis_web_password.value
+    },
+    {
+      name  = "ATLANTIS_WEB_USERNAME"
+      value = var.atlantis_web_username
+    },
+    {
+      name  = "ATLANTIS_WEBSOCKET_CHECK_ORIGIN"
+      value = "true"
+    },
+    {
+      name  = "TF_HTTP_LOCK_METHOD"
+      value = "POST"
+    },
+    {
+      name = "TF_HTTP_PASSWORD"
+      value = try(aws_secretsmanager_secret_version.atlantis_gh_token[0].secret_string,
+      aws_secretsmanager_secret_version.atlantis_gitlab_token[0].secret_string)
+    },
+    {
+      name  = "TF_HTTP_RETRY_WAIT_MIN"
+      value = "5"
+    },
+    {
+      name  = "TF_HTTP_UNLOCK_METHOD"
+      value = "DELETE"
+    },
+    {
+      name  = "TF_HTTP_USERNAME"
+      value = var.atlantis_web_username
+    },
   ]
 
   secrets = [
-    {
-      name      = "ATLANTIS_GITLAB_TOKEN"
-      valueFrom = try(aws_secretsmanager_secret.atlantis_gitlab_token[0].id, aws_secretsmanager_secret.atlantis_gh_token[0].id)
-    },
-    {
-      name      = "ATLANTIS_GITLAB_WEBHOOK_SECRET"
-      valueFrom = try(aws_secretsmanager_secret.atlantis_gitlab_secret[0].id, aws_secretsmanager_secret.atlantis_gh_secret[0].id)
-    },
     {
       name      = "ATLANTIS_GH_TOKEN"
       valueFrom = try(aws_secretsmanager_secret.atlantis_gh_token[0].id, aws_secretsmanager_secret.atlantis_gitlab_token[0].id)
@@ -75,6 +67,14 @@ locals {
     {
       name      = "ATLANTIS_GH_WEBHOOK_SECRET"
       valueFrom = try(aws_secretsmanager_secret.atlantis_gh_secret[0].id, aws_secretsmanager_secret.atlantis_gitlab_secret[0].id)
+    },
+    {
+      name      = "ATLANTIS_GITLAB_TOKEN"
+      valueFrom = try(aws_secretsmanager_secret.atlantis_gitlab_token[0].id, aws_secretsmanager_secret.atlantis_gh_token[0].id)
+    },
+    {
+      name      = "ATLANTIS_GITLAB_WEBHOOK_SECRET"
+      valueFrom = try(aws_secretsmanager_secret.atlantis_gitlab_secret[0].id, aws_secretsmanager_secret.atlantis_gh_secret[0].id)
     },
   ]
 }
@@ -113,6 +113,7 @@ module "atlantis" {
     memory                   = var.memory
     enable_autoscaling       = var.enable_autoscaling
     autoscaling_max_capacity = var.autoscaling_max_capacity
+
     task_exec_secret_arns = [
       try(aws_secretsmanager_secret.atlantis_gitlab_token[0].arn, aws_secretsmanager_secret.atlantis_gh_token[0].arn),
       try(aws_secretsmanager_secret.atlantis_gitlab_secret[0].arn, aws_secretsmanager_secret.atlantis_gh_secret[0].arn),
@@ -171,6 +172,4 @@ module "atlantis" {
       }
     }
   }
-
 }
-

@@ -1,16 +1,11 @@
-variable "nickname" {
-  description = "The organisation nickname"
-  type        = string
-}
-
-variable "stage" {
-  description = "the account stage-name"
-  type        = string
-}
-
 variable "acc_name" {
   description = "the account name"
   type        = string
+}
+
+variable "atlantis_dns_name" {
+  type        = string
+  description = "the DNS name for the atlantis web interface"
 }
 
 variable "atlantis_vpc_id" {
@@ -23,10 +18,9 @@ variable "atlantis_vpc_id" {
   }
 }
 
-variable "gitlab_hostname" {
+variable "atlantis_web_username" {
   type        = string
-  description = "base domain to be used for gitlab. Has to exist as Route53 zone in account"
-  default     = "code.example.com"
+  description = "username for the atlantis web interface"
 }
 
 variable "atlantis_zone_id" {
@@ -34,63 +28,10 @@ variable "atlantis_zone_id" {
   description = "a valid Route 53 Zone ID managing the presented core_domain"
 }
 
-variable "atlantis_dns_name" {
-  type        = string
-  description = "the DNS name for the atlantis web interface"
-}
-
-variable "repo_list" {
-  type        = list(string)
-  description = "list of repositories to be managed by atlantis"
-}
-
-variable "atlantis_web_username" {
-  type        = string
-  description = "username for the atlantis web interface"
-}
-
-variable "kms_key_id" {
-  type        = string
-  description = "KMS key id for the log group"
-}
-
-variable "log_group_name" {
-  type        = string
-  description = "name of the log group for the ECS cluster"
-}
-
-variable "task_iam_role_arn" {
-  type        = string
-  description = "ARN of the IAM role for the ECS task"
-}
-
-variable "exec_iam_role_policies" {
-  type        = map(string)
-  description = "map of IAM policies for the ECS task execution"
-}
-
-variable "github_username" {
-  description = "the username for the github account"
-  type        = string
-  default     = ""
-}
-
-variable "gitlab_username" {
-  description = "the username for the gitlab account"
-  type        = string
-  default     = ""
-}
-
 variable "autoscaling_max_capacity" {
   description = "maximum number of instances in the autoscaling group"
   type        = number
   default     = 4
-}
-
-variable "memory" {
-  description = "memory for the ECS task"
-  type        = number
-  default     = 2048
 }
 
 variable "cpu" {
@@ -105,9 +46,67 @@ variable "enable_autoscaling" {
   default     = true
 }
 
+variable "exec_iam_role_policies" {
+  type        = map(string)
+  description = "map of IAM policies for the ECS task execution"
+}
+
+variable "github_username" {
+  description = "the username for the github account"
+  type        = string
+  default     = ""
+}
+
+variable "gitlab_hostname" {
+  type        = string
+  description = "base domain to be used for gitlab. Has to exist as Route53 zone in account"
+  default     = "code.example.com"
+}
+
+variable "gitlab_username" {
+  description = "the username for the gitlab account"
+  type        = string
+  default     = ""
+}
+
+variable "kms_key_id" {
+  type        = string
+  description = "KMS key id for the log group"
+}
+
+variable "log_group_name" {
+  type        = string
+  description = "name of the log group for the ECS cluster"
+}
+
+variable "memory" {
+  description = "memory for the ECS task"
+  type        = number
+  default     = 2048
+}
+
+variable "nickname" {
+  description = "The organisation nickname"
+  type        = string
+}
+
 variable "region" {
   description = "valid AWS region to deploy to"
   type        = string
   default     = "eu-central-1"
 }
 
+variable "repo_list" {
+  type        = list(string)
+  description = "list of repositories to be managed by atlantis"
+}
+
+variable "stage" {
+  description = "the account stage-name"
+  type        = string
+}
+
+variable "task_iam_role_arn" {
+  type        = string
+  description = "ARN of the IAM role for the ECS task"
+}

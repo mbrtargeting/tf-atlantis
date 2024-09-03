@@ -82,7 +82,7 @@ locals {
 module "atlantis" {
   source = "terraform-aws-modules/atlantis/aws"
 
-  name = "atlantis"
+  name = "${local.prefix}-atlantis"
 
   # ECS Container Definition
   atlantis = {

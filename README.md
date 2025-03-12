@@ -7,13 +7,13 @@ Terraform Module for Atlantis environment in Gitlab and Github running in AWS EC
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 5.8 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 5.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.51.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.60.0 |
 | <a name="provider_random"></a> [random](#provider\_random) | 3.6.2 |
 
 ## Modules
@@ -30,15 +30,14 @@ Terraform Module for Atlantis environment in Gitlab and Github running in AWS EC
 | [aws_secretsmanager_secret.atlantis_gh_token](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/secretsmanager_secret) | resource |
 | [aws_secretsmanager_secret.atlantis_gitlab_secret](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/secretsmanager_secret) | resource |
 | [aws_secretsmanager_secret.atlantis_gitlab_token](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/secretsmanager_secret) | resource |
-| [aws_secretsmanager_secret.atlantis_web_password](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/secretsmanager_secret) | resource |
 | [aws_secretsmanager_secret_version.atlantis_gh_secret](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/secretsmanager_secret_version) | resource |
 | [aws_secretsmanager_secret_version.atlantis_gh_token](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/secretsmanager_secret_version) | resource |
 | [aws_secretsmanager_secret_version.atlantis_gitlab_secret](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/secretsmanager_secret_version) | resource |
 | [aws_secretsmanager_secret_version.atlantis_gitlab_token](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/secretsmanager_secret_version) | resource |
-| [aws_secretsmanager_secret_version.atlantis_web_password](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/secretsmanager_secret_version) | resource |
 | [aws_ssm_parameter.atlantis_gh_username](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssm_parameter) | resource |
 | [aws_ssm_parameter.atlantis_gitlab_username](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssm_parameter) | resource |
 | [aws_ssm_parameter.atlantis_repo_list](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssm_parameter) | resource |
+| [aws_ssm_parameter.atlantis_web_password](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssm_parameter) | resource |
 | [random_password.atlantis_gh_secret](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/password) | resource |
 | [random_password.atlantis_gitlab_secret](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/password) | resource |
 | [random_password.atlantis_web_password](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/password) | resource |
@@ -54,7 +53,6 @@ Terraform Module for Atlantis environment in Gitlab and Github running in AWS EC
 | <a name="input_acc_name"></a> [acc\_name](#input\_acc\_name) | the account name | `string` | n/a | yes |
 | <a name="input_atlantis_dns_name"></a> [atlantis\_dns\_name](#input\_atlantis\_dns\_name) | the DNS name for the atlantis web interface | `string` | n/a | yes |
 | <a name="input_atlantis_vpc_id"></a> [atlantis\_vpc\_id](#input\_atlantis\_vpc\_id) | a valid aws\_vpc id to install components in | `string` | n/a | yes |
-| <a name="input_atlantis_web_password"></a> [atlantis\_web\_password](#input\_atlantis\_web\_password) | password for the atlantis web interface | `string` | n/a | yes |
 | <a name="input_atlantis_web_username"></a> [atlantis\_web\_username](#input\_atlantis\_web\_username) | username for the atlantis web interface | `string` | n/a | yes |
 | <a name="input_atlantis_zone_id"></a> [atlantis\_zone\_id](#input\_atlantis\_zone\_id) | a valid Route 53 Zone ID managing the presented core\_domain | `string` | n/a | yes |
 | <a name="input_autoscaling_max_capacity"></a> [autoscaling\_max\_capacity](#input\_autoscaling\_max\_capacity) | maximum number of instances in the autoscaling group | `number` | `4` | no |

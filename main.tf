@@ -97,7 +97,7 @@ module "atlantis" {
   atlantis = {
     cpu         = var.cpu
     memory      = var.memory
-    environment = local.is_gitlab ? merge(local.environment_variables, local.gitlab_environment_variables) : local.environment_variables
+    environment = local.is_gitlab ? concat(local.environment_variables, local.gitlab_environment_variables) : local.environment_variables
     secrets     = local.secrets
   }
 

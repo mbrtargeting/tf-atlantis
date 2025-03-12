@@ -59,6 +59,13 @@ locals {
     },
   ]
 
+  gitlab_environment_variables = [
+    {
+      name  = "ATLANTIS_WRITE_GIT_CREDS"
+      value = true
+    },
+  ]
+
   secrets = [
     {
       name      = "ATLANTIS_GH_TOKEN"
@@ -77,6 +84,8 @@ locals {
       valueFrom = try(aws_secretsmanager_secret.atlantis_gitlab_secret[0].id, aws_secretsmanager_secret.atlantis_gh_secret[0].id)
     },
   ]
+
+  is_gitlab = var.atlantis_dns_name == "s4r-core-prod-atlantis.s4r.io" ? true : false
 }
 
 module "atlantis" {
@@ -88,7 +97,7 @@ module "atlantis" {
   atlantis = {
     cpu         = var.cpu
     memory      = var.memory
-    environment = local.environment_variables
+    environment = local.is_gitlab ? concat(local.environment_variables, local.gitlab_environment_variables) : local.environment_variables
     secrets     = local.secrets
   }
 

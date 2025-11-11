@@ -122,6 +122,7 @@ module "atlantis" {
     memory                   = var.memory
     enable_autoscaling       = var.enable_autoscaling
     autoscaling_max_capacity = var.autoscaling_max_capacity
+    subnets_ids              = data.aws_subnets.private.ids
 
     task_exec_secret_arns = [
       try(aws_secretsmanager_secret.atlantis_gitlab_token[0].arn, aws_secretsmanager_secret.atlantis_gh_token[0].arn),
@@ -133,12 +134,12 @@ module "atlantis" {
       try(aws_ssm_parameter.atlantis_gitlab_username[0].arn, aws_ssm_parameter.atlantis_gh_username[0].arn),
     ]
 
-    task_exec_iam_statements = {
+    task_exec_iam_statements = [{
       kms_access = {
         actions   = ["kms:GenerateDataKey", "kms:Encrypt", "kms:Decrypt"]
         resources = [var.kms_key_id]
       }
-    }
+    }]
 
     # Provide Atlantis permission necessary to create/destroy resources
     task_exec_iam_role_name = "AtlantisElevatedCdRunnerExec"
@@ -155,15 +156,15 @@ module "atlantis" {
     }
     assign_public_ip = false
   }
-  service_subnets = data.aws_subnets.private.ids
-  vpc_id          = var.atlantis_vpc_id
+
+  vpc_id = var.atlantis_vpc_id
 
   # ALB
-  alb_subnets             = data.aws_subnets.public.ids
   certificate_domain_name = var.atlantis_dns_name
   route53_zone_id         = var.atlantis_zone_id
   alb = {
     enable_deletion_protection = false
+    subnet_ids                 = data.aws_subnets.public.ids
   }
 
   # EFS

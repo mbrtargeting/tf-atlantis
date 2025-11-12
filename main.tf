@@ -122,7 +122,7 @@ module "atlantis" {
     memory                   = var.memory
     enable_autoscaling       = var.enable_autoscaling
     autoscaling_max_capacity = var.autoscaling_max_capacity
-    subnets_ids              = data.aws_subnets.private.ids
+    subnet_ids               = data.aws_subnets.private.ids
 
     task_exec_secret_arns = [
       try(aws_secretsmanager_secret.atlantis_gitlab_token[0].arn, aws_secretsmanager_secret.atlantis_gh_token[0].arn),

@@ -135,10 +135,9 @@ module "atlantis" {
     ]
 
     task_exec_iam_statements = [{
-      kms_access = {
-        actions   = ["kms:GenerateDataKey", "kms:Encrypt", "kms:Decrypt"]
-        resources = [var.kms_key_id]
-      }
+      sid       = "KmsAccess"
+      actions   = ["kms:GenerateDataKey", "kms:Encrypt", "kms:Decrypt"]
+      resources = [var.kms_key_id]
     }]
 
     # Provide Atlantis permission necessary to create/destroy resources

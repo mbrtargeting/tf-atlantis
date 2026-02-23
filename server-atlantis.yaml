@@ -11,9 +11,7 @@ workflows:
   default:
     plan:
       steps:
-        - init:
-            extra_args:
-              - "upgrade=false" # this will stop tf from re-downloading providers unnecessarily during every Atlantis plan
+        - init
         - plan
     apply:
       steps:

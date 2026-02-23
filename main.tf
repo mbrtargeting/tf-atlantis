@@ -57,6 +57,15 @@ locals {
       name  = "TF_HTTP_USERNAME"
       value = var.atlantis_web_username
     },
+    # Terraform provider download + temp dir fixes for ce-894
+    {
+      name  = "TMPDIR"
+      value = "/atlantis-data/tmp"
+    },
+    {
+      name  = "TF_PLUGIN_CACHE_DIR"
+      value = "/atlantis-data/plugin-cache"
+    },
   ]
 
   gitlab_environment_variables = [

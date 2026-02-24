@@ -60,11 +60,11 @@ locals {
     # Terraform provider download + temp dir fixes for ce-894
     {
       name  = "TMPDIR"
-      value = "/atlantis-data/tmp"
+      value = "/home/atlantis/tmp"
     },
     {
       name  = "TF_PLUGIN_CACHE_DIR"
-      value = "/atlantis-data/plugin-cache"
+      value = "/home/atlantis/plugin-cache"
     },
   ]
 

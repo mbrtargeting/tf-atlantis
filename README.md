@@ -57,7 +57,7 @@ Terraform Module for Atlantis environment in Gitlab and Github running in AWS EC
 | <a name="input_atlantis_zone_id"></a> [atlantis\_zone\_id](#input\_atlantis\_zone\_id) | a valid Route 53 Zone ID managing the presented core\_domain | `string` | n/a | yes |
 | <a name="input_autoscaling_max_capacity"></a> [autoscaling\_max\_capacity](#input\_autoscaling\_max\_capacity) | maximum number of instances in the autoscaling group | `number` | `4` | no |
 | <a name="input_cpu"></a> [cpu](#input\_cpu) | cpu for the ECS task | `number` | `512` | no |
-| <a name="input_default_tf_version"></a> [default\_tf\_version](#input\_default\_tf\_version) | terraform version atlantis downloads and uses by default (ATLANTIS\_DEFAULT\_TF\_VERSION) | `string` | `"1.17.0"` | no |
+| <a name="input_default_tf_version"></a> [default\_tf\_version](#input\_default\_tf\_version) | terraform version atlantis downloads and uses by default (ATLANTIS\_DEFAULT\_TF\_VERSION) | `string` | `"v1.17.0"` | no |
 | <a name="input_enable_autoscaling"></a> [enable\_autoscaling](#input\_enable\_autoscaling) | enable autoscaling for the ECS service | `bool` | `true` | no |
 | <a name="input_exec_iam_role_policies"></a> [exec\_iam\_role\_policies](#input\_exec\_iam\_role\_policies) | map of IAM policies for the ECS task execution | `map(string)` | n/a | yes |
 | <a name="input_github_username"></a> [github\_username](#input\_github\_username) | the username for the github account | `string` | `""` | no |

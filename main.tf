@@ -1,6 +1,10 @@
 locals {
   environment_variables = [
     {
+      name  = "ATLANTIS_DEFAULT_TF_VERSION"
+      value = var.default_tf_version
+    },
+    {
       name  = "ATLANTIS_GITLAB_HOSTNAME"
       value = var.gitlab_hostname
     },

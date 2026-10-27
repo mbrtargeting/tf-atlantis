@@ -57,6 +57,7 @@ Terraform Module for Atlantis environment in Gitlab and Github running in AWS EC
 | <a name="input_atlantis_zone_id"></a> [atlantis\_zone\_id](#input\_atlantis\_zone\_id) | a valid Route 53 Zone ID managing the presented core\_domain | `string` | n/a | yes |
 | <a name="input_autoscaling_max_capacity"></a> [autoscaling\_max\_capacity](#input\_autoscaling\_max\_capacity) | maximum number of instances in the autoscaling group | `number` | `4` | no |
 | <a name="input_cpu"></a> [cpu](#input\_cpu) | cpu for the ECS task | `number` | `512` | no |
+| <a name="input_default_tf_version"></a> [default\_tf\_version](#input\_default\_tf\_version) | terraform version atlantis downloads and uses by default (ATLANTIS\_DEFAULT\_TF\_VERSION) | `string` | `"1.17.0"` | no |
 | <a name="input_enable_autoscaling"></a> [enable\_autoscaling](#input\_enable\_autoscaling) | enable autoscaling for the ECS service | `bool` | `true` | no |
 | <a name="input_exec_iam_role_policies"></a> [exec\_iam\_role\_policies](#input\_exec\_iam\_role\_policies) | map of IAM policies for the ECS task execution | `map(string)` | n/a | yes |
 | <a name="input_github_username"></a> [github\_username](#input\_github\_username) | the username for the github account | `string` | `""` | no |
@@ -79,26 +80,26 @@ No outputs.
 ## Requirements
 
 | Name | Version |
-|------|---------|
+| ---- | ------- |
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 5.0 |
 
 ## Providers
 
 | Name | Version |
-|------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 6.20.0 |
-| <a name="provider_random"></a> [random](#provider\_random) | 3.7.2 |
+| ---- | ------- |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 6.70.0 |
+| <a name="provider_random"></a> [random](#provider\_random) | 3.9.1 |
 
 ## Modules
 
 | Name | Source | Version |
-|------|--------|---------|
+| ---- | ------ | ------- |
 | <a name="module_atlantis"></a> [atlantis](#module\_atlantis) | terraform-aws-modules/atlantis/aws | n/a |
 
 ## Resources
 
 | Name | Type |
-|------|------|
+| ---- | ---- |
 | [aws_secretsmanager_secret.atlantis_gh_secret](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/secretsmanager_secret) | resource |
 | [aws_secretsmanager_secret.atlantis_gh_token](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/secretsmanager_secret) | resource |
 | [aws_secretsmanager_secret.atlantis_gitlab_secret](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/secretsmanager_secret) | resource |
@@ -122,7 +123,7 @@ No outputs.
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
+| ---- | ----------- | ---- | ------- | :------: |
 | <a name="input_acc_name"></a> [acc\_name](#input\_acc\_name) | the account name | `string` | n/a | yes |
 | <a name="input_atlantis_dns_name"></a> [atlantis\_dns\_name](#input\_atlantis\_dns\_name) | the DNS name for the atlantis web interface | `string` | n/a | yes |
 | <a name="input_atlantis_vpc_id"></a> [atlantis\_vpc\_id](#input\_atlantis\_vpc\_id) | a valid aws\_vpc id to install components in | `string` | n/a | yes |
@@ -130,6 +131,7 @@ No outputs.
 | <a name="input_atlantis_zone_id"></a> [atlantis\_zone\_id](#input\_atlantis\_zone\_id) | a valid Route 53 Zone ID managing the presented core\_domain | `string` | n/a | yes |
 | <a name="input_autoscaling_max_capacity"></a> [autoscaling\_max\_capacity](#input\_autoscaling\_max\_capacity) | maximum number of instances in the autoscaling group | `number` | `4` | no |
 | <a name="input_cpu"></a> [cpu](#input\_cpu) | cpu for the ECS task | `number` | `512` | no |
+| <a name="input_default_tf_version"></a> [default\_tf\_version](#input\_default\_tf\_version) | terraform version atlantis downloads and uses by default (ATLANTIS\_DEFAULT\_TF\_VERSION) | `string` | `"v1.17.0"` | no |
 | <a name="input_enable_autoscaling"></a> [enable\_autoscaling](#input\_enable\_autoscaling) | enable autoscaling for the ECS service | `bool` | `true` | no |
 | <a name="input_exec_iam_role_policies"></a> [exec\_iam\_role\_policies](#input\_exec\_iam\_role\_policies) | map of IAM policies for the ECS task execution | `map(string)` | n/a | yes |
 | <a name="input_github_username"></a> [github\_username](#input\_github\_username) | the username for the github account | `string` | `""` | no |

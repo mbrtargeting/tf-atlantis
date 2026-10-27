@@ -40,6 +40,12 @@ variable "cpu" {
   default     = 512
 }
 
+variable "default_tf_version" {
+  description = "terraform version atlantis downloads and uses by default (ATLANTIS_DEFAULT_TF_VERSION)"
+  type        = string
+  default     = "v1.17.0"
+}
+
 variable "enable_autoscaling" {
   description = "enable autoscaling for the ECS service"
   type        = bool
